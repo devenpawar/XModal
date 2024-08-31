@@ -77,8 +77,8 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
 
   return (
     <>
-      <div style={overlayStyle} onClick={handleClose} />
-      <div style={modalStyle}>
+      <div class="modal" style={overlayStyle} onClick={handleClose} />
+      <div class="modal" style={modalStyle}>
         <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>
           Fill Details
         </h2>
