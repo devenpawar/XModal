@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./UserDetailsModal.css";
 import {
   Modal,
   Box,
@@ -148,7 +149,7 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
             />
           </Tooltip>
           <Button
-            className="modal-content submit-button "
+            className="modal-content submit-button"
             type="submit"
             variant="contained"
             color="primary"
