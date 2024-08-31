@@ -148,15 +148,17 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
               onChange={handleChange}
             />
           </Tooltip>
-          <Button
-            className="modal-content submit-button"
-            type="submit"
-            variant="contained"
-            color="primary"
-            sx={{ mt: 2, display: "block", margin: "0 auto" }}
+          <div
+            style={{ width: "100%", display: "flex", justifyContent: "center" }}
           >
-            Submit
-          </Button>
+            <button
+              className="modal-content submit-button"
+              type="submit"
+              style={{ padding: "0.5rem", width: "100px", borderRadius: "5px" }}
+            >
+              Submit
+            </button>
+          </div>
         </form>
       </Box>
     </Modal>
