@@ -1,24 +1,28 @@
 import React, { useState } from "react";
 import "./UserDetailsModal.css";
-import {
-  Modal,
-  Box,
-  Typography,
-  Button,
-  TextField,
-  Tooltip,
-} from "@mui/material";
+import { Tooltip } from "@mui/material";
 
-const style = {
-  position: "absolute",
+const modalStyle = {
+  position: "fixed",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
+  width: "400px",
+  backgroundColor: "#fff",
   border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
+  boxShadow: "24px",
+  padding: "16px",
+  zIndex: 1000,
+};
+
+const overlayStyle = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: "rgba(0, 0, 0, 0.7)",
+  zIndex: 999,
 };
 
 function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
@@ -38,7 +42,7 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
   };
 
   const validateForm = () => {
-    const { name, email, phone, dob } = formData;
+    const { email, phone, dob } = formData;
     if (!email.includes("@")) {
       alert("Invalid email");
       return false;
@@ -69,48 +73,51 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
     }
   };
 
+  if (!open) return null;
+
   return (
-    <Modal open={open} onClose={handleClose} className="modal">
-      <Box sx={style}>
-        <Typography
-          variant="h6"
-          component="h2"
-          style={{ textAlign: "center", marginBottom: "1rem" }}
-        >
+    <>
+      <div style={overlayStyle} onClick={handleClose} />
+      <div style={modalStyle}>
+        <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>
           Fill Details
-        </Typography>
+        </h2>
         <form className="modal-content" onSubmit={handleSubmit}>
           <Tooltip
             title={showTooltips && !formData.name ? "Enter your full name" : ""}
             placement="top"
           >
-            <TextField
-              id="username"
-              name="name"
-              fullWidth
-              margin="normal"
-              label="Username"
-              value={formData.name}
-              onChange={handleChange}
-            />
+            <div>
+              <label>Username:</label>
+              <input
+                id="username"
+                name="name"
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+                style={{ width: "100%", marginBottom: "1rem" }}
+              />
+            </div>
           </Tooltip>
           <Tooltip
             title={
               showTooltips && (!formData.email || !formData.email.includes("@"))
-                ? `Please include an '@' in the email address.'${formData.email}'is missing an '@'.`
+                ? `Please include an '@' in the email address.'${formData.email}' is missing an '@'.`
                 : ""
             }
             placement="top"
           >
-            <TextField
-              id="email"
-              name="email"
-              fullWidth
-              margin="normal"
-              label="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-            />
+            <div>
+              <label>Email Address:</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                style={{ width: "100%", marginBottom: "1rem" }}
+              />
+            </div>
           </Tooltip>
           <Tooltip
             title={
@@ -120,33 +127,37 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
             }
             placement="top"
           >
-            <TextField
-              id="phone"
-              name="phone"
-              fullWidth
-              margin="normal"
-              label="Phone Number"
-              value={formData.phone}
-              onChange={handleChange}
-            />
+            <div>
+              <label>Phone Number:</label>
+              <input
+                id="phone"
+                name="phone"
+                type="text"
+                value={formData.phone}
+                onChange={handleChange}
+                style={{ width: "100%", marginBottom: "1rem" }}
+              />
+            </div>
           </Tooltip>
-
           <Tooltip
             title={
-              showTooltips && !formData.dob ? "Select your date of birth" : ""
+              showTooltips && new Date(formData.dob) > new Date()
+                ? "Invalid date of birth"
+                : ""
             }
             placement="top"
           >
-            <TextField
-              id="dob"
-              name="dob"
-              type="date"
-              fullWidth
-              margin="normal"
-              InputLabelProps={{ shrink: true }}
-              value={formData.dob}
-              onChange={handleChange}
-            />
+            <div>
+              <label>Date of Birth:</label>
+              <input
+                id="dob"
+                name="dob"
+                type="date"
+                value={formData.dob}
+                onChange={handleChange}
+                style={{ width: "100%", marginBottom: "1rem" }}
+              />
+            </div>
           </Tooltip>
           <div
             style={{ width: "100%", display: "flex", justifyContent: "center" }}
@@ -160,8 +171,8 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
             </button>
           </div>
         </form>
-      </Box>
-    </Modal>
+      </div>
+    </>
   );
 }
 
