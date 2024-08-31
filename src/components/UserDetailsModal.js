@@ -37,16 +37,17 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
   };
 
   const validateForm = () => {
-    const { name, email, phone, address, dob } = formData;
-    if (!name || !email || !phone || !address || !dob) {
+    const { name, email, phone, dob } = formData;
+    if (!email.includes("@")) {
+      alert("Invalid Email");
       return false;
     }
     if (phone.length !== 10) {
-      alert("Phone number must be 10 digits long.");
+      alert("Invalid phone number");
       return false;
     }
     if (new Date(dob) > new Date()) {
-      alert("Date of birth cannot be in the future.");
+      alert("Invalid date of birth");
       return false;
     }
     return true;
@@ -68,7 +69,7 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={open} onClose={handleClose} className="modal">
       <Box sx={style}>
         <Typography
           variant="h6"
@@ -83,6 +84,7 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
             placement="top"
           >
             <TextField
+              id="username"
               name="name"
               fullWidth
               margin="normal"
@@ -100,6 +102,7 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
             placement="top"
           >
             <TextField
+              id="email"
               name="email"
               fullWidth
               margin="normal"
@@ -117,6 +120,7 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
             placement="top"
           >
             <TextField
+              id="phone"
               name="phone"
               fullWidth
               margin="normal"
@@ -125,21 +129,7 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
               onChange={handleChange}
             />
           </Tooltip>
-          <Tooltip
-            title={
-              showTooltips && !formData.address ? "Enter your address" : ""
-            }
-            placement="top"
-          >
-            <TextField
-              name="address"
-              fullWidth
-              margin="normal"
-              label="Address"
-              value={formData.address}
-              onChange={handleChange}
-            />
-          </Tooltip>
+
           <Tooltip
             title={
               showTooltips && !formData.dob ? "Select your date of birth" : ""
@@ -147,6 +137,7 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
             placement="top"
           >
             <TextField
+              id="dob"
               name="dob"
               type="date"
               fullWidth
@@ -157,6 +148,7 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
             />
           </Tooltip>
           <Button
+            className="modal-content submit-button "
             type="submit"
             variant="contained"
             color="primary"
