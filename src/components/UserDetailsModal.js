@@ -39,7 +39,7 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
   const validateForm = () => {
     const { name, email, phone, dob } = formData;
     if (!email.includes("@")) {
-      alert("Invalid Email");
+      alert("Invalid email");
       return false;
     }
     if (phone.length !== 10) {
