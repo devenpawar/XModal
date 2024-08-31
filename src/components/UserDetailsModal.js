@@ -26,29 +26,46 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
     email: "",
     phone: "",
     address: "",
-    dob: "", // Initialize dob as an empty string
+    dob: "",
   });
+
+  const [showTooltips, setShowTooltips] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    handleFormSubmit(formData);
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      address: "",
-      dob: "", // Clear the dob field
-    });
+  const validateForm = () => {
+    const { name, email, phone, address, dob } = formData;
+    if (!name || !email || !phone || !address || !dob) {
+      return false;
+    }
+    if (phone.length !== 10) {
+      alert("Phone number must be 10 digits long.");
+      return false;
+    }
+    if (new Date(dob) > new Date()) {
+      alert("Date of birth cannot be in the future.");
+      return false;
+    }
+    return true;
   };
 
-  const emailTooltip = formData.email.includes("@")
-    ? "Enter a valid email address"
-    : `Please include an '@' in the email address. ${formData.email} in your email address`;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setShowTooltips(true);
+    if (validateForm()) {
+      handleFormSubmit(formData);
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+        dob: "",
+      });
+    }
+  };
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -61,8 +78,10 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
           Fill Details
         </Typography>
         <form onSubmit={handleSubmit}>
-          <Typography style={{ textAlign: "center" }}>Username</Typography>
-          <Tooltip title="Enter your full name" placement="top">
+          <Tooltip
+            title={showTooltips && !formData.name ? "Enter your full name" : ""}
+            placement="top"
+          >
             <TextField
               name="name"
               fullWidth
@@ -72,8 +91,14 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
               onChange={handleChange}
             />
           </Tooltip>
-          <Typography style={{ textAlign: "center" }}>Email Address</Typography>
-          <Tooltip title={emailTooltip} placement="top">
+          <Tooltip
+            title={
+              showTooltips && (!formData.email || !formData.email.includes("@"))
+                ? `Please include an '@' in the email address.'${formData.email}'is missing an '@'.`
+                : ""
+            }
+            placement="top"
+          >
             <TextField
               name="email"
               fullWidth
@@ -83,8 +108,14 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
               onChange={handleChange}
             />
           </Tooltip>
-          <Typography style={{ textAlign: "center" }}>Phone Number</Typography>
-          <Tooltip title="Enter your phone number" placement="top">
+          <Tooltip
+            title={
+              showTooltips && formData.phone.length !== 10
+                ? "Phone number must be 10 digits long"
+                : ""
+            }
+            placement="top"
+          >
             <TextField
               name="phone"
               fullWidth
@@ -94,14 +125,33 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
               onChange={handleChange}
             />
           </Tooltip>
-          <Typography style={{ textAlign: "center" }}>Date of Birth</Typography>
-          <Tooltip title="Select your date of birth" placement="top">
+          <Tooltip
+            title={
+              showTooltips && !formData.address ? "Enter your address" : ""
+            }
+            placement="top"
+          >
+            <TextField
+              name="address"
+              fullWidth
+              margin="normal"
+              label="Address"
+              value={formData.address}
+              onChange={handleChange}
+            />
+          </Tooltip>
+          <Tooltip
+            title={
+              showTooltips && !formData.dob ? "Select your date of birth" : ""
+            }
+            placement="top"
+          >
             <TextField
               name="dob"
               type="date"
               fullWidth
               margin="normal"
-              InputLabelProps={{ shrink: true }} // Ensure label is displayed for date input
+              InputLabelProps={{ shrink: true }}
               value={formData.dob}
               onChange={handleChange}
             />
