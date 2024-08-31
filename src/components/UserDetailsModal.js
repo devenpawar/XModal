@@ -79,7 +79,7 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
         >
           Fill Details
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form className="modal-content" onSubmit={handleSubmit}>
           <Tooltip
             title={showTooltips && !formData.name ? "Enter your full name" : ""}
             placement="top"
@@ -152,7 +152,7 @@ function UserDetailsModal({ open, handleClose, handleFormSubmit }) {
             style={{ width: "100%", display: "flex", justifyContent: "center" }}
           >
             <button
-              className="modal-content submit-button"
+              className="submit-button"
               type="submit"
               style={{ padding: "0.5rem", width: "100px", borderRadius: "5px" }}
             >
